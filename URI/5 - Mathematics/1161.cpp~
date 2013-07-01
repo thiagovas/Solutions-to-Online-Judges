@@ -1,0 +1,31 @@
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
+#include <cctype>
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <queue>
+#include <deque>
+#include <map>
+#include <set>
+#include <stack>
+#include <functional>
+#include <utility>
+#include <string>
+#include <sstream>
+using namespace std;
+
+int main()
+{
+    unsigned long long comb[21];
+    int a, b;
+    
+    comb[0] = 1;
+    for(register int i = 1; i < 21; i++)
+        comb[i] = i*comb[i-1];
+    
+    while(scanf("%d %d", &a, &b) != EOF)
+        cout << comb[a] + comb[b] << endl;
+    return 0;
+}
