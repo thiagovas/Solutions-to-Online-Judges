@@ -1,16 +1,4 @@
-#include <iostream>
-#include <cstdlib>
-#include <cmath>
-#include <map>
-#include <algorithm>
-#include <set>
-#include <utility>
-#include <vector>
-#include <locale>
-#include <cstring>
-#include <string>
-#include <stack>
-#include <queue>
+#include <bits/stdc++.h>
 using namespace std;
  
 #define endl "\n"
