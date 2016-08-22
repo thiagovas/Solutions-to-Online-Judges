@@ -3,51 +3,59 @@ using namespace std;
 
 #define endl "\n"
 #define INF 0x3f3f3f3f
+#define LINF 0x3f3f3f3f3f3f3f3f
 typedef long long int ll;
+typedef long double ld;
 
-string op[] = {"001", "010", "100", "011", "101", "110"};
-vector<string> vs;
+string s;
 
-bool check(string s)
+bool valid(int n)
 {
-  int sz=s.size();
-  for(int i = 0; i < 3; i++)
+  if(n < 3) return true;
+  for(int t = 1; t <= n/3; t++)
   {
-    for(int t = 1; t <= (s.size()-i)/3; t++)
+    bool eh=false;
+    for(int i = 0; i < t; i++)
     {
-      int k=0;
-      for(k = 0; k < t; k++)
+      if(not(s[n-i-1] == s[n-i-1-t] && s[n-i-1] == s[n-i-1-2*t]))
       {
-        if(not (s[sz-i-1-k]==s[sz-i-1-k-t] && s[sz-i-1-k]==s[sz-i-1-k-2*t]))
-          break;
+        eh=true; break;
       }
-      if(k==t) return false;
     }
+    if(not eh) return false;
   }
   return true;
 }
 
-void gen(string s)
+int backtrack(int i)
 {
-  if(s.size() <= 30)
-  {
-    vs.push_back(s);
-    if(s.size() == 30) return;
-  }
+  if(i==s.size()) return 1;
   
-  if(check(s+"0")) gen(s+"0");
-  if(check(s+"1")) gen(s+"1");
+  int ret=0;
+  if(s[i]=='*')
+  {
+    s[i]='0';
+    if(valid(i+1))
+      ret += backtrack(i+1);
+    
+    s[i]='1';
+    if(valid(i+1))
+      ret += backtrack(i+1);
+    s[i]='*';
+  }
+  else
+  {
+    if(valid(i+1)) return backtrack(i+1);
+    else return 0;
+  }
+  return ret;
 }
+
 
 int main()
 {
   ios::sync_with_stdio(false);  cin.tie(0);  cout.tie(0);
-  
   int n, teste=1;
-  string s;
-  
-  for(int i = 0; i < 6; i++)
-    gen(op[i]);
   
   while(true)
   {
@@ -55,26 +63,8 @@ int main()
     if(not cin) break;
     if(n==0) break;
     
-    set<string> result;
     cin >> s;
-    for(int i = 0; i < vs.size(); i++)
-    {
-      bool eh=true;
-      if(vs[i].size() < s.size()) continue;
-      for(int j = 0; j < s.size(); j++)
-      {
-        if(s[j]!='*')
-        {
-          if(s[j]!=vs[i][j])
-          {
-            eh=false;
-            break;
-          }
-        }
-      }
-      if(eh) result.insert(vs[i].substr(0, s.size()));
-    }
-    cout << "Case " << teste++ << ": " << result.size() << endl;
+    cout << "Case " << teste++ << ": " << backtrack(0) << endl;
   }
   
   return 0;
